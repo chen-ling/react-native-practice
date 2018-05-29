@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import todos from '../model/todos';
-import {StyleSheet,Text,View,Alert,TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, View, Alert, TouchableOpacity } from 'react-native';
 import Swipeout from 'react-native-swipeout';
 
 const styles = StyleSheet.create({
-  itemText:{
+  itemText: {
     padding: 12,
     fontSize: 20,
     height: 50,
@@ -17,7 +17,7 @@ export default class TodoItem extends React.Component {
   static propTypes = {
     item: PropTypes.object.isRequired,
     index: PropTypes.number,
-    onDeleteItem: PropTypes.func,
+    onDeleteTodo: PropTypes.func,
     onPressItem: PropTypes.func
   };
 
@@ -25,8 +25,8 @@ export default class TodoItem extends React.Component {
     this.props.onPressItem(this.props.index);
   };
 
-  deleteItem = () => {
-    this.props.onDeleteItem(this.props.index);
+  deleteTodo = () => {
+    this.props.onDeleteTodo(this.props.index);
   };
 
   render() {
@@ -40,10 +40,10 @@ export default class TodoItem extends React.Component {
             'Alert',
             'Are you sure you want to delete?',
             [
-              {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-              {text: 'Yes', onPress: () => {this.deleteItem()}},
+              { text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
+              { text: 'Yes', onPress: () => { this.deleteTodo() } },
             ],
-            {cancelable: true}
+            { cancelable: true }
           );
         },
       }
@@ -54,12 +54,12 @@ export default class TodoItem extends React.Component {
         right={swipeoutBtns}
         autoClose={true} >
 
-      <TouchableOpacity
-        style={{flex: 1,backgroundColor: this.props.index % 2 == 0 ? 'transparent':'#dddcdcdc'}}
-        onPress={this.onPressItem}>
-        <Text style={styles.itemText}>{this.props.item.name}</Text>
-      </TouchableOpacity>
-    </Swipeout>
+        <TouchableOpacity
+          style={{ flex: 1, backgroundColor: this.props.index % 2 == 0 ? 'transparent' : '#dddcdcdc' }}
+          onPress={this.onPressItem}>
+          <Text style={styles.itemText}>{this.props.item.name}</Text>
+        </TouchableOpacity>
+      </Swipeout>
 
     );
   }

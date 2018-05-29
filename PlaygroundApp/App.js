@@ -4,18 +4,18 @@ import todos from './model/todos';
 import TodoItem from './components/TodoItem';
 import React from 'react';
 import AddModal from './components/AddModal';
-import {Button, Dimensions,  FlatList, StyleSheet,Text,View,Image} from 'react-native';
+import { Button, Dimensions, FlatList, StyleSheet, Text, View, Image, TouchableHighlight } from 'react-native';
 
-const {width} = Dimensions.get('window').width
+const { width } = Dimensions.get('window').width
 const keyExtractor = (item, index) => index.toString();
 
 export default class App extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
-      activeKey: null
+      activeKey: null,
+      refreshing: false
     };
-    this.onPressItem = this.onPressItem.bind(this);
   }
   refreshFlatList = activeRowKey => {
     this.setState((prevState) => {
@@ -23,12 +23,27 @@ export default class App extends React.Component {
         activeKey: activeRowKey
       };
     });
+    console.log(activeRowKey);
   }
+  onRefresh = () => {
+    this.setState({ refreshing: true });
+  }
+  onStop = () => {
+    this.setState({ refreshing: false });
+  }
+
   onPressItem = index => {
+    // this.onRefresh();
+    // this.refs.addModal.showAddModal();
+  };
+
+  onPressAdd = () => {
+    console.log('onPressAdd');
+    // this.onRefresh();
     this.refs.addModal.showAddModal();
   };
 
-  deleteItem = index => {
+  deleteTodo = index => {
     todos.splice(index, 1);
     this.refreshFlatList(index);
   };
@@ -36,27 +51,35 @@ export default class App extends React.Component {
   addTodo = item => {
     todos.push(item);
     this.refreshFlatList(item.key);
-    console.log(item.key);
+    // this.onStop();
   };
 
   render() {
     return (
       <View style={styles.container}>
         <Image
-        style={styles.backgroundImage}
-        source={require('./assets/images/list_bg.png')}/>
+          style={styles.backgroundImage}
+          source={require('./assets/images/list_bg.png')} />
         <NavigateBar title={'Todos'} />
         <FlatList
+          ref={'flatList'}
           data={todos}
+          extraData={this.state}
           keyExtractor={keyExtractor}
+          refreshing={this.state.refreshing}
+          onRefresh={this.onRefresh}
           renderItem={
-            ({item, index}) => {
+            ({ item, index }) => {
               return (
-                <TodoItem item={item} index={index} onDeleteItem={this.deleteItem} onPressItem={this.onPressItem}></TodoItem>
+                <TodoItem item={item} index={index} onDeleteTodo={this.deleteTodo} onPressItem={this.onPressItem}></TodoItem>
               );
             }}
         />
-        <Footer ref={'footer'}/>
+        <View>
+          <TouchableHighlight style={styles.footer} onPress={this.onPressAdd} underlayColor='burlywood'>
+            <Image style={styles.icon} source={require('./assets/images/note_add.png')} />
+          </TouchableHighlight>
+        </View>
         <AddModal ref={'addModal'} addTodo={this.addTodo} ></AddModal>
       </View>
     );
@@ -73,7 +96,7 @@ const styles = StyleSheet.create({
     alignItems: 'stretch',
     justifyContent: 'center'
   },
-  backgroundImage:{
+  backgroundImage: {
     flex: 1,
     resizeMode: 'center',
     position: 'absolute',
@@ -81,4 +104,14 @@ const styles = StyleSheet.create({
     height: '100%',
     justifyContent: 'center',
   },
+  footer: {
+    height: 60,
+    backgroundColor: 'gold',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  icon: {
+    height: 30,
+    width: 30,
+  }
 });

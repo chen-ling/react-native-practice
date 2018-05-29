@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
   }
 });
 
-export default class AddModal extends React.Component {
+export default class EditModal extends React.Component {
   static propTypes = {
     addTodo: PropTypes.func.isRequired,
   };
