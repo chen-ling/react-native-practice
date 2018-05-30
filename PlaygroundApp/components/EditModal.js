@@ -1,4 +1,4 @@
-import todos from '../model/todos';
+import Todos from '../model/Todos';
 import React from 'react';
 import { Dimensions, StyleSheet, Text, View, TextInput, Alert } from 'react-native';
 import Modal from 'react-native-modalbox';
@@ -45,42 +45,41 @@ const styles = StyleSheet.create({
 
 export default class EditModal extends React.Component {
   static propTypes = {
-    addTodo: PropTypes.func.isRequired,
+    editTodo: PropTypes.func.isRequired,
   };
   constructor(props) {
     super(props);
     this.state = {
-      newTodo: '',
+      name: '',
+      index: null,
     };
   }
-  generateKey = (numberOfCharacters) => {
-    return require('random-string')({ length: numberOfCharacters });
-  }
-  showAddModal = () => {
-    this.refs.myModal.open();
+  showEditModal = (todo, index) => {
+    this.setState({
+      index: index,
+      name: todo.name,
+    });
+    this.refs.myEditModal.open();
   };
   render() {
     return (
-      <Modal ref={'myModal'} style={styles.modal} position='center'>
-        <Text style={styles.title}>Add Todo</Text>
+      <Modal ref={'myEditModal'} style={styles.modal} position='center'>
+        <Text style={styles.title}>Edit Todo</Text>
         <TextInput style={styles.inputText}
-          onChangeText={(text) => this.setState({ newTodo: text })}
-          placeholder="Enter todo"
-          value={this.state.newTodo} />
+          onChangeText={(text) => this.setState({ name: text })}
+          placeholder="Edit todo"
+          value={this.state.name} />
         <Button style={styles.saveBotton}
           containerStyle={styles.saveBottonContainer}
           onPress={() => {
-            if (this.state.newTodo.length == 0) {
+            if (this.state.name.length == 0) {
               Alert.alert('You must enter todo');
               return;
             }
-            const newTodo = {
-              key: this.generateKey(6),
-              name: this.state.newTodo
-            }
-            this.refs.myModal.close();
-            this.props.addTodo(newTodo);
-            this.setState({ newTodo: '' });
+            Todos[this.state.index].name = this.state.name;
+            this.props.editTodo(Todos[this.state.index]);
+            this.refs.myEditModal.close();
+            this.setState({ name: '' });
           }}>Save</Button>
       </Modal>
     );

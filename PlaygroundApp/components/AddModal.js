@@ -1,4 +1,3 @@
-import todos from '../model/todos';
 import React from 'react';
 import { Dimensions, StyleSheet, Text, View, TextInput, Alert } from 'react-native';
 import Modal from 'react-native-modalbox';
@@ -75,7 +74,7 @@ export default class AddModal extends React.Component {
               return;
             }
             const newTodo = {
-              key: this.generateKey(6),
+              id: this.generateKey(6),
               name: this.state.newTodo
             }
             this.refs.myModal.close();

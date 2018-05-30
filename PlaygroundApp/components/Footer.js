@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Dimensions, Image, StyleSheet, TouchableHighlight, View } from 'react-native';
-import todos from '../model/todos';
 
 var screen = Dimensions.get('window');
 

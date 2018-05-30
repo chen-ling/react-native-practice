@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import todos from '../model/todos';
 import { StyleSheet, Text, View, Alert, TouchableOpacity } from 'react-native';
 import Swipeout from 'react-native-swipeout';
 
@@ -17,20 +16,26 @@ export default class TodoItem extends React.Component {
   static propTypes = {
     item: PropTypes.object.isRequired,
     index: PropTypes.number,
-    onDeleteTodo: PropTypes.func,
-    onPressItem: PropTypes.func
+    onPressDelete: PropTypes.func,
+    onPressEdit: PropTypes.func
   };
 
-  onPressItem = () => {
-    this.props.onPressItem(this.props.index);
+  onEditTodo = () => {
+    this.props.onPressEdit(this.props.item, this.props.index);
   };
 
   deleteTodo = () => {
-    this.props.onDeleteTodo(this.props.index);
+    this.props.onPressDelete(this.props.index);
   };
 
   render() {
     var swipeoutBtns = [
+      {
+        text: 'Edit', type: 'primary',
+        onPress: () => {
+          this.onEditTodo();
+        }
+      },
       {
         text: 'Delete',
         backgroundColor: 'red',
@@ -55,8 +60,7 @@ export default class TodoItem extends React.Component {
         autoClose={true} >
 
         <TouchableOpacity
-          style={{ flex: 1, backgroundColor: this.props.index % 2 == 0 ? 'transparent' : '#dddcdcdc' }}
-          onPress={this.onPressItem}>
+          style={{ flex: 1, backgroundColor: this.props.index % 2 == 0 ? 'transparent' : '#dddcdcdc' }}>
           <Text style={styles.itemText}>{this.props.item.name}</Text>
         </TouchableOpacity>
       </Swipeout>

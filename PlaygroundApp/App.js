@@ -1,9 +1,10 @@
 import NavigateBar from './components/NavigateBar';
 import Footer from './components/Footer';
-import todos from './model/todos';
+import Todos from './model/Todos';
 import TodoItem from './components/TodoItem';
 import React from 'react';
 import AddModal from './components/AddModal';
+import EditModal from './components/EditModal';
 import { Button, Dimensions, FlatList, StyleSheet, Text, View, Image, TouchableHighlight } from 'react-native';
 
 const { width } = Dimensions.get('window').width
@@ -14,47 +15,42 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       activeKey: null,
-      refreshing: false
     };
   }
+  
   refreshFlatList = activeRowKey => {
     this.setState((prevState) => {
       return {
         activeKey: activeRowKey
       };
     });
-    console.log(activeRowKey);
   }
-  onRefresh = () => {
-    this.setState({ refreshing: true });
-  }
-  onStop = () => {
-    this.setState({ refreshing: false });
-  }
-
-  onPressItem = index => {
-    // this.onRefresh();
-    // this.refs.addModal.showAddModal();
-  };
 
   onPressAdd = () => {
-    console.log('onPressAdd');
-    // this.onRefresh();
     this.refs.addModal.showAddModal();
+    
+  };
+
+  onEditTodo = (item, index) => {
+    this.refs.editModal.showEditModal(item, index);
   };
 
   deleteTodo = index => {
-    todos.splice(index, 1);
+    Todos.splice(index, 1);
     this.refreshFlatList(index);
   };
 
   addTodo = item => {
-    todos.push(item);
-    this.refreshFlatList(item.key);
-    // this.onStop();
+    Todos.push(item);
+    this.refreshFlatList(item.id);
+  };
+
+  editedTodo = item => {
+    this.refreshFlatList(item.id);
   };
 
   render() {
+    console.log('render flatlist');
     return (
       <View style={styles.container}>
         <Image
@@ -63,7 +59,7 @@ export default class App extends React.Component {
         <NavigateBar title={'Todos'} />
         <FlatList
           ref={'flatList'}
-          data={todos}
+          data={Todos}
           extraData={this.state}
           keyExtractor={keyExtractor}
           refreshing={this.state.refreshing}
@@ -71,7 +67,7 @@ export default class App extends React.Component {
           renderItem={
             ({ item, index }) => {
               return (
-                <TodoItem item={item} index={index} onDeleteTodo={this.deleteTodo} onPressItem={this.onPressItem}></TodoItem>
+                <TodoItem item={item} index={index} onPressDelete={this.deleteTodo} onPressEdit={this.onEditTodo}></TodoItem>
               );
             }}
         />
@@ -81,6 +77,7 @@ export default class App extends React.Component {
           </TouchableHighlight>
         </View>
         <AddModal ref={'addModal'} addTodo={this.addTodo} ></AddModal>
+        <EditModal ref={'editModal'} editTodo={this.editedTodo} ></EditModal>
       </View>
     );
   }
