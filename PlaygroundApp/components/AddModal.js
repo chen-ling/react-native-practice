@@ -19,26 +19,36 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: 'bold',
     textAlign: 'center',
-    marginTop: 20,
+    marginTop: 10,
   },
   inputText: {
     height: 40,
     borderBottomColor: 'gray',
     borderBottomWidth: 1,
     fontSize: 18,
-    margin: 40,
+    margin: 20,
+  },
+  inputDescText: {
+    height: 40,
+    borderBottomColor: 'gray',
+    borderBottomWidth: 1,
+    fontSize: 18,
+    marginRight: 20,
+    marginLeft: 20,
   },
   saveBotton: {
     fontSize: 18,
-    color: 'black'
+    color: 'white',
+    fontWeight: 'bold',
   },
   saveBottonContainer: {
     padding: 8,
-    marginLeft: 70,
-    marginRight: 70,
+    marginLeft: 60,
+    marginRight: 60,
     height: 40,
-    backgroundColor: 'yellow',
+    backgroundColor: 'gold',
     borderRadius: 6,
+    marginTop: 30,
   }
 });
 
@@ -50,6 +60,7 @@ export default class AddModal extends React.Component {
     super(props);
     this.state = {
       newTodo: '',
+      todoDescription: '',
     };
   }
   generateKey = (numberOfCharacters) => {
@@ -64,8 +75,12 @@ export default class AddModal extends React.Component {
         <Text style={styles.title}>Add Todo</Text>
         <TextInput style={styles.inputText}
           onChangeText={(text) => this.setState({ newTodo: text })}
-          placeholder="Enter todo"
+          placeholder="Todo"
           value={this.state.newTodo} />
+        <TextInput style={styles.inputDescText}
+          onChangeText={(text) => this.setState({ todoDescription: text })}
+          placeholder="Description"
+          value={this.state.todoDescription} />
         <Button style={styles.saveBotton}
           containerStyle={styles.saveBottonContainer}
           onPress={() => {
@@ -75,7 +90,8 @@ export default class AddModal extends React.Component {
             }
             const newTodo = {
               id: this.generateKey(6),
-              name: this.state.newTodo
+              name: this.state.newTodo,
+              description: this.state.todoDescription,
             }
             this.refs.myModal.close();
             this.props.addTodo(newTodo);

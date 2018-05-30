@@ -60,7 +60,11 @@ export default class TodoItem extends React.Component {
         autoClose={true} >
 
         <TouchableOpacity
-          style={{ flex: 1, backgroundColor: this.props.index % 2 == 0 ? 'transparent' : '#dddcdcdc' }}>
+          style={{ flex: 1, backgroundColor: this.props.index % 2 == 0 ? 'transparent' : '#dddcdcdc' }}
+          onPress={() => {
+            Alert.alert(this.props.item.description);
+          }
+          }>
           <Text style={styles.itemText}>{this.props.item.name}</Text>
         </TouchableOpacity>
       </Swipeout>
