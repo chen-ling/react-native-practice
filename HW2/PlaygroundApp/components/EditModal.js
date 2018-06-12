@@ -1,4 +1,4 @@
-import Todos from '../model/Todos';
+import {mockBrands} from '../model/seeds';
 import React from 'react';
 import { Dimensions, StyleSheet, Text, View, TextInput, Alert } from 'react-native';
 import Modal from 'react-native-modalbox';
@@ -93,9 +93,9 @@ export default class EditModal extends React.Component {
               Alert.alert('You must enter todo and description');
               return;
             }
-            Todos[this.state.index].name = this.state.name;
-            Todos[this.state.index].description = this.state.todoDescription;
-            this.props.editTodo(Todos[this.state.index]);
+            mockBrands[this.state.index].name = this.state.name;
+            mockBrands[this.state.index].description = this.state.todoDescription;
+            this.props.editTodo(mockBrands[this.state.index]);
             this.refs.myEditModal.close();
             this.setState({ name: '' });
           }}>Save</Button>

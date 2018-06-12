@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { StyleSheet, Text, View, Alert, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Alert, TouchableOpacity, Image } from 'react-native';
 import Swipeout from 'react-native-swipeout';
 
 const styles = StyleSheet.create({
@@ -8,7 +8,11 @@ const styles = StyleSheet.create({
     padding: 12,
     fontSize: 20,
     height: 50,
-  }
+  },
+  backgroundImage: {
+    height: 200,
+    resizeMode: Image.resizeMode.cover
+  },
 });
 
 
@@ -59,14 +63,10 @@ export default class TodoItem extends React.Component {
         right={swipeoutBtns}
         autoClose={true} >
 
-        <TouchableOpacity
-          style={{ flex: 1, backgroundColor: this.props.index % 2 == 0 ? 'transparent' : '#dddcdcdc' }}
-          onPress={() => {
-            Alert.alert(this.props.item.description);
-          }
-          }>
-          <Text style={styles.itemText}>{this.props.item.name}</Text>
-        </TouchableOpacity>
+        <Image
+          style={styles.backgroundImage}
+          source={{uri: this.props.item.imageUrl}} >
+          </Image>
       </Swipeout>
 
     );

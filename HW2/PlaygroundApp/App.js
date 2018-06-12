@@ -1,11 +1,10 @@
 import NavigateBar from './components/NavigateBar';
 import Footer from './components/Footer';
-import Todos from './model/Todos';
+import {mockBrands} from './model/seeds';
 import TodoItem from './components/TodoItem';
 import React from 'react';
-import AddModal from './components/AddModal';
 import EditModal from './components/EditModal';
-import { Button, Dimensions, FlatList, StyleSheet, Text, View, Image, TouchableHighlight } from 'react-native';
+import { Button, Dimensions, FlatList, StyleSheet, Text, View } from 'react-native';
 
 const { width } = Dimensions.get('window').width
 const keyExtractor = (item, index) => index.toString();
@@ -36,12 +35,12 @@ export default class App extends React.Component {
   };
 
   deleteTodo = index => {
-    Todos.splice(index, 1);
+    mockBrands.splice(index, 1);
     this.refreshFlatList(index);
   };
 
   addTodo = item => {
-    Todos.push(item);
+    mockBrands.push(item);
     this.refreshFlatList(item.id);
   };
 
@@ -53,13 +52,10 @@ export default class App extends React.Component {
     console.log('render flatlist');
     return (
       <View style={styles.container}>
-        <Image
-          style={styles.backgroundImage}
-          source={require('./assets/images/list_bg.png')} />
         <NavigateBar title={'Todos'} />
         <FlatList
           ref={'flatList'}
-          data={Todos}
+          data={mockBrands}
           extraData={this.state}
           keyExtractor={keyExtractor}
           refreshing={this.state.refreshing}
@@ -71,12 +67,6 @@ export default class App extends React.Component {
               );
             }}
         />
-        <View>
-          <TouchableHighlight style={styles.footer} onPress={this.onPressAdd} underlayColor='burlywood'>
-            <Image style={styles.icon} source={require('./assets/images/note_add.png')} />
-          </TouchableHighlight>
-        </View>
-        <AddModal ref={'addModal'} addTodo={this.addTodo} ></AddModal>
         <EditModal ref={'editModal'} editTodo={this.editedTodo} ></EditModal>
       </View>
     );
@@ -92,14 +82,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'stretch',
     justifyContent: 'center'
-  },
-  backgroundImage: {
-    flex: 1,
-    resizeMode: 'center',
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-    justifyContent: 'center',
   },
   footer: {
     height: 60,
