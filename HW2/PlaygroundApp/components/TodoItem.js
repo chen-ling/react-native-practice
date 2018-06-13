@@ -1,17 +1,53 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { StyleSheet, Text, View, Alert, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, Text, View, Alert, TouchableOpacity, Image,ImageBackground } from 'react-native';
 import Swipeout from 'react-native-swipeout';
 
 const styles = StyleSheet.create({
-  itemText: {
-    padding: 12,
+  itemOuter:{
+    marginTop: 25,
+    marginRight: 20,
+    marginLeft: 20,
+    marginBottom: 5,
+  },
+  storeName: {
+    paddingTop: 12,
     fontSize: 20,
-    height: 50,
+    textAlign: 'left',
+    fontWeight: 'bold',
   },
   backgroundImage: {
-    height: 200,
-    resizeMode: Image.resizeMode.cover
+    height: 180,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+  },
+  avaliableTime: {
+    paddingTop: 12,
+    fontSize: 15,
+    textAlign: 'right',
+    position: 'absolute', 
+    bottom: 5,
+    right: 15,
+    color:'white',
+    shadowColor: '#000',
+    shadowOffset: { width: 120, height: 30 },
+    shadowOpacity: 0.2,
+    shadowRadius: 20,
+  },
+  avaliableTimeMask: {
+    height: 50,
+    flex:1,
+    shadowColor: '#000',
+    shadowOffset: { width: 120, height: 30 },
+    shadowOpacity: 0.2,
+    shadowRadius: 20,
+  },
+  tags: {
+    paddingTop: 5,
+    fontSize: 15,
+    color:'grey'
   },
 });
 
@@ -56,18 +92,32 @@ export default class TodoItem extends React.Component {
           );
         },
       }
-    ]
+    ];
+    const tagsKey = this.props.item.tags.map(tag => 
+        tag.key
+    );
+    console.log(tagsKey.join('.  '));
+    
     return (
-      <Swipeout
-        backgroundColor="transparent"
-        right={swipeoutBtns}
-        autoClose={true} >
+      // <Swipeout
+      // style={styles.itemOuter}
+      //   backgroundColor="transparent"
+      //   right={swipeoutBtns}
+      //   autoClose={true} >
 
-        <Image
+<View style={styles.itemOuter}>
+        <ImageBackground
           style={styles.backgroundImage}
-          source={{uri: this.props.item.imageUrl}} >
-          </Image>
-      </Swipeout>
+          imageStyle={{resizeMode: 'cover'}}
+          source={{uri: this.props.item.imageUrl}}
+          borderRadius={5} >
+          <View style={styles.avaliableTimeMask}>
+          <Text style={styles.avaliableTime}>{this.props.item.estimatedDeliveryTime}</Text>
+          </View>
+          </ImageBackground>
+          <Text style={styles.storeName}>{this.props.item.name}</Text>
+          <Text style={styles.tags}>{tagsKey.join('. ')}</Text>
+          </View>
 
     );
   }
