@@ -1,0 +1,6 @@
+[submodule "android"]
+	path = android
+	url = https://github.com/honestbee/HB-Droid-Consumer.git
+[submodule "HB-Droid-Core"]
+	path = HB-Droid-Core
+	url = https://github.com/honestbee/HB-Droid-Core.git
