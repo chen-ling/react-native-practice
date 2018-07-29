@@ -2,13 +2,16 @@ package com.hybridrnapp;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 
 import com.facebook.react.ReactInstanceManager;
+import com.facebook.react.ReactPackage;
 import com.facebook.react.ReactRootView;
 import com.facebook.react.common.LifecycleState;
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
 import com.facebook.react.shell.MainReactPackage;
+import com.hybridrnapp.reactnative.ReactNativePackage;
+
+import java.util.Arrays;
 
 public class RNActivity extends Activity implements DefaultHardwareBackBtnHandler {
     private ReactRootView mReactRootView;
@@ -23,7 +26,10 @@ public class RNActivity extends Activity implements DefaultHardwareBackBtnHandle
                 .setApplication(getApplication())
                 .setBundleAssetName("index.android.bundle")
                 .setJSMainModulePath("index")
-                .addPackage(new MainReactPackage())
+                .addPackages(Arrays.<ReactPackage>asList(
+                        new MainReactPackage(),
+                        new ReactNativePackage()
+                ))
                 .setUseDeveloperSupport(BuildConfig.DEBUG)
                 .setInitialLifecycleState(LifecycleState.RESUMED)
                 .build();
