@@ -7,11 +7,11 @@
  */
 
 import React, {PureComponent} from 'react';
-import {StyleSheet, Text, View, NativeModules, TouchableHighlight} from 'react-native';
+import {StyleSheet, Text, View, NativeModules, TouchableHighlight, DeviceEventEmitter} from 'react-native';
 import AndroidTextView from './AndroidTextView';
 
 const androidNativeModule = NativeModules.AndroidNativeModule;
-
+const NativeEventEmitter = DeviceEventEmitter;
 
 export default class App extends PureComponent {
 
@@ -20,6 +20,19 @@ export default class App extends PureComponent {
     this.state = {
       title: 'Title'
     };
+
+    this.subscription = NativeEventEmitter.addListener(
+      'nativeEventListener',
+      response => {
+        console.log(response.brandName);
+        console.log(response.result);
+      }
+    );
+  }
+
+  componentWillUnmount() {
+    console.log('componentWillUnmount!');
+    this.subscription.remove();
   }
 
   componentDidMount() {
